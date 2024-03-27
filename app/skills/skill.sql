@@ -13,6 +13,12 @@ CREATE TABLE skills (
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+INSERT INTO skills (name) VALUES
+('Programming: Python'), ('Programming: Javascript'), ('Programming: HTML/CSS');
+('Programming: SQL'), ('Programming: Java'), ('Programming: C/C++'), ('Programming: Ruby');
+('Creative: Graphic Design'), ('Creative: Photography'), ('Creative: Writing');
+ ('Creative: Music Production');
+
 CREATE TABLE achievements (
     `id` INTEGER PRIMARY KEY AUTOINCREMENT,
     `skill_id` INTEGER NOT NULL,
