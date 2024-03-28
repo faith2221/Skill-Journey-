@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+  <h1> Welcome to Skill Journey</h1>
+  <p>Embark on an exciting journey of self-improvement with SkillJourney! Whether you are aiming  develop lifestyle skills or develop professional skills, SkillJourney is your ultimate companion to keep track of your progress, set milestones, and celebrate your achievements along the way. Join us today and unlock your full potential!</p>
+  <a href="{{ url_for('users.register') }}"><button>Register</button></a>"
+  <a href=" {{ url_for('users.login') }}"><button>Log In</button></a>
+</div>
+{% endblock content %}

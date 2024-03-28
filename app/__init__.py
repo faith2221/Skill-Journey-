@@ -1,5 +1,4 @@
 from flask import Flask
-
 def create_app():
     app = Flask(__name__)
     app.config.from_mapping(
@@ -11,7 +10,11 @@ def create_app():
     from app.users.views import bp as user_bp
     app.register_blueprint(user_bp) 
 
+    from app.skills.views import bp as skills_bp
+    app.register_blueprint(skills_bp)
+
     from app import db
     db.init_app(app)
+
 
     return app

@@ -4,7 +4,11 @@ from app.db import get_db
 from app.utils import form_errors, validate
 from werkzeug.security import generate_password_hash, check_password_hash
 
-bp = Blueprint('users', __name__)
+bp = Blueprint('users', __name__, url_prefix='/users')
+
+@bp.route('/')
+def landing_page():
+    return render_template('users/landing.html')
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -23,7 +27,7 @@ def register():
             db.commit()
 
             # Flash after successful registration and redirect
-            flash('Account created successfully', category='success')
+            flash('Account created successfully!', category='success')
             return redirect(url_for('users.login'))
         
         # Handle Errors
@@ -42,13 +46,13 @@ def login():
         user = db.execute("""--sql
         SELECT * FROM users WHERE username = ? OR email = ?""", (username, username)).fetchone()
         if user is None or not check_password_hash(user['password'], password):
-            flash("Invalid username or password", category='danger')
+            flash("Invalid username or password!", category='danger')
             return render_template('users/login.html')
         else:
-            flash("Logged in successfully", category='success')
+            flash("Logged in successfully!", category='success')
             session.clear()
             session['user_id'] = user['id']
-            return redirect('/')
+            return redirect('users/')
     return render_template('users/login.html')
 
 @bp.route('/logout')
