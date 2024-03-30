@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1>Welcome to your Home Page</h1>
+    <p>Here you can set your goals and manage your progress</p>
+    
+    <a href="{{ url_for ('skills.add_skill') }}">Add</a>
+    <a href="{{ url_for ('skills.view_skills') }}">View</a>
+       
+{% endblock content %}

@@ -1,14 +1,10 @@
-import functools
 from flask import request, render_template, Blueprint, session, url_for, redirect, flash, g
 from app.db import get_db
 from app.utils import form_errors, validate
 from werkzeug.security import generate_password_hash, check_password_hash
+from app.users.login_utils import login_required
 
 bp = Blueprint('users', __name__, url_prefix='/users')
-
-@bp.route('/')
-def landing_page():
-    return render_template('users/landing.html')
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -52,12 +48,19 @@ def login():
             flash("Logged in successfully!", category='success')
             session.clear()
             session['user_id'] = user['id']
-            return redirect('users/')
+            return redirect(url_for('users.home'))
     return render_template('users/login.html')
+
+@bp.route('/home')
+@login_required
+def home():
+    """ Route to render the home page, restricted to authenticated users"""
+    return render_template('users/home.html')
 
 @bp.route('/logout')
 def logout():
     session.clear()
+    flash('Logged out successfully!', category='info')
     return redirect(url_for('users.login'))
 
 @bp.before_app_request
@@ -70,11 +73,3 @@ def load_auth_user():
         user = db.execute("""--sql
         SELECT * from users WHERE id = ?""", (user_id,)).fetchone()
         g.user = user
-
-def login_required(view):
-    @functools.wraps(view)
-    def wrapped(**kwargs):
-        if g.user is None:
-            return redirect(url_for('users.login'))
-        return view(**kwargs)
-    return wrapped

@@ -2,8 +2,12 @@ DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE users (
     `id` INTEGER PRIMARY KEY AUTOINCREMENT,
+    `first_name` VARCHAR(255) UNIQUE NULL,
+    `last_name` VARCHAR(255) UNIQUE NULL,
     `username` VARCHAR(255) UNIQUE NULL,
     `email` VARCHAR(255) UNIQUE NOT NULL,
-    `password` VARCHAR(120) NOT NULL,
-    `is_admin` BOOLEAN DEFAULT 0 NOT NULL
+    `is_admin` BOOLEAN DEFAULT 0 NOT NULL,
+    `is_staff` BOOLEAN DEFAULT 0 NOT NULL,
+    `is_active` BOOLEAN DEFAULT 1 NOT NULL,
+    `password` VARCHAR(120) NOT NULL
 );
