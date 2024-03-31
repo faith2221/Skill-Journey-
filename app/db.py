@@ -20,7 +20,7 @@ def create_db():
 
 def create_admin(first_name, last_name, email, password):
     db = get_db()
-    db.execute("""INSERT INTO users (first_name, last_name, email, password
+    db.execute("""INSERT INTO users (first_name, last_name, email, password,
     is_admin) VALUES (?, ?, ?, ?, ?)""", (first_name, last_name, email, password))
     db.commit()
 

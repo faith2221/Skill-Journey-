@@ -29,6 +29,11 @@
         <input type="password" name="password" id="password" class="form-control {% if errors.password %} is-invalid {% endif %}">
         <div class="invalid-feedback">{{ errors.password }}</div>
       </div>
+      <div class="mb-3">
+        <label for="confirm_password" class="form-label">Confirm Password</label>
+        <input type="password" name="confirm_password" id="confirm_password" class="form-control">
+        <div class="invalid-feedback">{{ errors.password }}</div>
+      </div>
       <div class="d-grid">
         <button class="btn btn-primary">Create account</button>
       </div>

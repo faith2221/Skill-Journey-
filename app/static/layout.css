@@ -1,0 +1,14 @@
+.logo {
+    display: flex;
+    align-items: center;
+    color: #333;
+    font-size: 18px;
+}
+
+.logo-text {
+    text-transform: lowercase;
+}
+
+.logo-text span:first-letter {
+    text-transform: uppercase;
+}

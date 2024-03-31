@@ -15,10 +15,10 @@ def add_skill():
         skill_name = request.form['skill_name']
         if skill_name:
             db = get_db()
-            db.execute(" INSERT INTO skills (skill_name) VALUES (?)", (skill_name))
+            db.execute(" INSERT INTO skills (skill_name) VALUES (?)", (skill_name,))
             db.commit()
             flash('Skill added successfully!', 'success')
-            return redirect(url_for('users.view_resources'))
+            return redirect(url_for('skills.view_resources'))
         else:
             flash('Skill name is required', 'error')
     return render_template('skills/add_skill.html')
