@@ -13,50 +13,52 @@ CREATE TABLE skills (
     FOREIGN KEY (`user_id`) REFERENCES users(`id`)
 );
 
-INSERT INTO skills (skill_name) VALUES
-('Python'),
-('Javascript'),
-('HTML/CSS'),
-('Java'),
-('C/C++'),
-('SQL'),
-('Ruby'),
-('Graphic Design'),
-('Photography'),
-('Writing'),
-('Music Production'),
-('Storytelling'),
-('Craftsmanship'),
-('Cooking'),
-('Time Management'),
-('Workouts'),
-('Traveling'),
-('Self-Care'),
-('Communication'),
-('Yoga'),
-('Networking'),
-('Resume Writing'),
-('Public Speaking'),
-('Leadership'),
-('Problem Solving'),
-('Interview Skills');
-
-CREATE TABLE user_skills (
-    `user_id` INTEGER,
-    `skill_id` INTEGER,
-    FOREIGN KEY (`user_id`) REFERENCES users(`id`),
-    FOREIGN KEY (`skill_id`) REFERENCES skills(`id`),
-    PRIMARY KEY (`user_id`, `skill_id`)
-);
-
-CREATE TABLE IF NOT EXISTS user_selected_skills (
+CREATE TABLE resources (
     `id` INTEGER PRIMARY KEY AUTOINCREMENT,
-    `user_id` INTEGER NOT NULL,
-    `skill_id` INTEGER NOT NULL,
-    `selected_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-     FOREIGN KEY (`user_id`) REFERENCES users(`id`),
-     FOREIGN KEY (`skill_id`) REFERENCES skills(`id`) 
+    `title` VARCHAR(255) NOT NULL,
+    `skill_id` INEGER NOT NULL,
+    FOREIGN KEY (`skill_id`) REFERENCES users(`id`)
 );
+
+CREATE TABLE resource_links (
+    `id` INTEGER PRIMARY KEY AUTOINCREMENT,
+    `resource_id` INTEGER NOT NULL,
+    `url` VARCHAR(255) NOT NULL,
+    FOREIGN KEY (`resource_id`) REFERENCES resources(`id`)
+);
+
+-- Insert Resource Titles
+INSERT INTO resources (title, skill_id) VALUES
+('Python', 1),
+('Javascript', 2),
+('HTML/CSS', 3),
+('Java', 4),
+('C/C++', 5),
+('SQL', 6),
+('Ruby', 7),
+('Graphic Design', 8),
+('Photography', 9),
+('Writing', 10),
+('Music Production', 11),
+('Storytelling', 12),
+('Craftsmanship', 13),
+('Cooking', 14),
+('Time Management', 15),
+('Workouts', 16),
+('Traveling', 17),
+('Self-Care', 18),
+('Communication', 19),
+('Yoga', 20),
+('Networking', 21),
+('Resume Writing', 22),
+('Public Speaking', 23),
+('Leadership', 24),
+('Problem Solving', 24),
+('Interview Skills', 26);
+
+-- Insert resource links
+INSERT INTO skills (skill_name) VALUES
+
 
 CREATE TABLE posts (
     `id` INTEGER PRIMARY KEY AUTOINCREMENT,
