@@ -3,6 +3,7 @@ import re
 from flask import request, render_template, Blueprint, session, url_for, redirect, flash, g
 from app.db import get_db
 from app.utils import form_errors, validate
+from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.users.login_utils import login_required
 
@@ -95,7 +96,8 @@ def view_profile():
     """ View user profile """
     db = get_db()
     user_id = g.user['id']
-    profile = db.execute("""SELECT * FROM profiles WHERE user_id = ?""", (user_id,)).fetchone()
+    profile = db.execute("""SELECT * FROM profiles WHERE user_id = ?""",
+                         (user_id,)).fetchone()
     if not profile:
         flash('Profile not found', 'error')
         return redirect(url_for('users.register'))
@@ -112,11 +114,13 @@ def edit_profile():
     # Fetch the profile information
     profile= db.execute("""SELECT * FROM profiles WHERE user_id = ?""",
                         (user_id,)).fetchone()
-    if not profile:
-        flash('Profile not found', 'error')
-        return redirect(url_for('users.register'))
-
-    if request.method == 'POST':
+    try:
+        if request.method == 'POST':
+            # Fetch existing user data
+            existing_user = db.execute("""SELECT * FROM users WHERE id = ?""",
+                                       (user_id,)).fetchone()
+        
+        # Get form data
         bio = request.form['bio']
         website_url = request.form['website_url']
         location = request.form ['location']
@@ -128,6 +132,11 @@ def edit_profile():
                 filename = secure_filename(profile_picture.filename)
                 profile_picture.save(os.path.join(UPLOAD_FOLDER, filename))
                 profile_picture_url = url_for('static', filename='uploads/' + filename)
+
+                # Update profile picture URL in the database
+                db.execute("""UPDATE profiles
+                           SET profile_picture_url = ? WHERE user_id = ?""",
+                           (profile_picture_url, user_id))
             else:
                 profile_picture_url = None
         else:
@@ -146,8 +155,14 @@ def edit_profile():
                    SET bio = ?, profile_picture_url = ?, website_url = ?,
                    location = ? WHERE user_id = ?""", (bio, profile_picture_url,
                    website_url, location, user_id))
+        db.commit()
+
         flash('Profile updated successfully!', 'success')
         return redirect(url_for('users.home'))
+
+    except Exception as e:
+        flash('An error occured while updating the profile!', 'error')
+        app.logger.error(f"Error updating profile: {e}")
 
     return render_template('users/edit_profile.html', profile=profile)
        
@@ -155,7 +170,17 @@ def edit_profile():
 @login_required
 def home():
     """ Route to render the home page, restricted to authenticated users"""
-    return render_template('users/home.html')
+    db = get_db()
+    user_id = session.get('user_id')
+    user = db.execute("""SELECT * FROM users WHERE id = ?""", (user_id,)).fetchone()
+    if user:
+        username = user['username']
+        profile_picture_url = user.get('profile_picture_url')
+        return render_template('users/home.html', username=username,
+                                profile_picture_url = profile_picture_url)
+    else:
+        flash('User not found', 'error')
+        return render_template('users/home.html')
 
 @bp.route('/logout')
 def logout():

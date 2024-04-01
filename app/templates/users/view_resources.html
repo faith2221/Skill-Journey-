@@ -1,0 +1,30 @@
+{% extends "layout.html "%}
+
+{% block header %}
+<div class="header">
+    <div class="left-header">
+        <form method="POST" action="{{ url_for('users.home') }}">
+            <button type="submit">Home</button>
+        </form>
+    </div>
+    <div class="right-header">
+        <form method="POST" class="search-form">
+            <input type="text" name="search_query" placeholder="Search...">
+            <button type="submit">Search</button>
+        </form>
+    </div> 
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Resources</h1>
+    <ul>
+        {% for resource in resources %}
+            <li>
+                <a href="{{ url_for('resources.view_resource', resource_id=resource.id) }}">{{ resource.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

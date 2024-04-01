@@ -4,6 +4,7 @@ from pathlib import Path
 
 # Configure the app
 def create_app():
+    """ Create and configure the app."""
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         DATABASE=str(Path(app.instance_path) / 'db.sqlite3'),
@@ -11,6 +12,7 @@ def create_app():
         UPLOAD_FOLDER=Path(__file__).parent / 'uploads'
     )
 
+    # Ensure the instance folder exists
     try:
         Path(app.instance_path).mkdir(exist_ok=True)
     except OSError:
@@ -34,6 +36,7 @@ def create_app():
 
     @app.route('/uploads/<filename>')
     def uploads(filename):
+        """ Serve uploaded files."""
         return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
     return app
