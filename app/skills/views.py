@@ -18,8 +18,9 @@ def view_resources():
         search_query = request.form.get('search_query', '').strip()
 
         # Query the database to retrieve resources
-        resources = db.execute("""SELECT title,
-                           url FROM resources ORDER BY title""").fetchall()
+        resources = db.execute("""SELECT r1.id, r.title, rl.url
+                               FROM resource_links url
+                               JOIN resources r ON rl.resource_id """).fetchall()
     return render_template('skills/view_resources.html', resources=resources)
 
 @bp.route('/posts', methods=['GET', 'POST'])
@@ -123,7 +124,7 @@ def view_all_posts():
     next_post_ids = [post['id'] for post in posts[1:]] + [None]
 
     # Render the view
-    return render_template('skills/view_posts.html', posts=posts
+    return render_template('skills/view_posts.html', posts=posts,
                            previous_post_ids=previous_post_ids,
                            next_post_ids=next_post_ids)
 
@@ -175,7 +176,7 @@ def edit_comment(post_id, comment_id):
     
     return render_template('skills/edit_comment.html', comment=comment)
 
-@bp.route('/posts/<int:post_id>/comments' methods=['GET'])
+@bp.route('/posts/<int:post_id>/comments', methods=['GET'])
 @login_required
 def view_all_comments(post_id):
     """ Logic to view comments"""

@@ -1,9 +1,31 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <h1>Welcome to your Home Page</h1>
-    <p>Here you can set your goals and manage your progress</p>
-    
-    <a href="{{ url_for ('skills.add_skill') }}">Add</a>
-       
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    {% if profile_picture_url %}
+                        <img src="{{ profile_picture_url }}" alt="Profile Picture">
+                    {% else %}
+                        <!-- Placeholder image -->
+                        <div class="placeholder"></div>
+                    {% endif %}
+                    <p>Welcome {{ username }}</p>
+                    <ul>
+                        <li><a href="{{ url_for('users.view_profile') }}">Profile</a></li>
+                        <li><a href="{{ url_for('users.community') }}">Community</a></li>
+                        <li><a href="{{ url_for('users.logout') }}">Logout</a></li>
+                    </ul>                    
+                </div>
+            </div>
+            <div class="col-md-9">
+                <!-- Content -->
+                <div class="content">
+                    <p>Here you can view resources and interact with others in the community</p>
+                </div>
+            </div>
+        </div>
+    </div>     
 {% endblock content %}

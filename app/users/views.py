@@ -1,6 +1,7 @@
 import os
 import re
 from flask import request, render_template, Blueprint, session, url_for, redirect, flash, g
+from flask import current_app
 from app.db import get_db
 from app.utils import form_errors, validate
 from werkzeug.utils import secure_filename
@@ -102,7 +103,7 @@ def view_profile():
         flash('Profile not found', 'error')
         return redirect(url_for('users.register'))
     
-    return render_template('profile.html', profile=profile)
+    return render_template('users/view_profile.html', profile=profile)
 
 @bp.route('/profile/edit', methods=['GET', 'POST'])
 @login_required
@@ -150,8 +151,7 @@ def edit_profile():
             return render_template('users/edit_profile.html', profile=profile)
                                     
         # Update profile data in the database
-        db.execute("""
-                   UPDATE profiles
+        db.execute("""UPDATE profiles
                    SET bio = ?, profile_picture_url = ?, website_url = ?,
                    location = ? WHERE user_id = ?""", (bio, profile_picture_url,
                    website_url, location, user_id))
@@ -162,7 +162,7 @@ def edit_profile():
 
     except Exception as e:
         flash('An error occured while updating the profile!', 'error')
-        app.logger.error(f"Error updating profile: {e}")
+        current_app.logger.error(f"Error updating profile: {e}")
 
     return render_template('users/edit_profile.html', profile=profile)
        
@@ -175,21 +175,29 @@ def home():
     user = db.execute("""SELECT * FROM users WHERE id = ?""", (user_id,)).fetchone()
     if user:
         username = user['username']
-        profile_picture_url = user.get('profile_picture_url')
+        profile_picture_url = user['profile_picture_url']
         return render_template('users/home.html', username=username,
                                 profile_picture_url = profile_picture_url)
     else:
         flash('User not found', 'error')
         return render_template('users/home.html')
+    
+@bp.route('/community')
+@login_required
+def community():
+    """ Route to post and comment """
+    return render_template('users/community.html')
 
 @bp.route('/logout')
 def logout():
+    """ Route to log out a user"""
     session.clear()
     flash('Logged out successfully!', category='info')
     return redirect(url_for('users.login'))
 
 @bp.before_app_request
 def load_auth_user():
+    """ Load the currently authenticated user."""
     user_id = session.get('user_id')
     if user_id is None:
         g.user = None

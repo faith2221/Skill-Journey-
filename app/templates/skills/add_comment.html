@@ -1,0 +1,9 @@
+{% extends  "layout.html" %}
+
+{% block content %}
+    <form method="post" action="{{ urrl_for('skills.add_comment', post_id=post.id) }}">
+        <label for="comment-content">Comment:</label>
+        <textarea id="comment-content name="comment_content" required></textarea><br>
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}
