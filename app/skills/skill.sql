@@ -66,7 +66,6 @@ INSERT INTO resource_links (url) VALUES
 CREATE TABLE posts (
     `id` INTEGER PRIMARY KEY AUTOINCREMENT,
     `title` VARCHAR(255) NOT NULL,
-    `image` VARCHAR(255) NOT NULL,
     `content` TEXT NOT NULL,
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `publish` DATE default CURRENT_TIMESTAMP,
