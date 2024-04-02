@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block contennt %}
+<div class="container">
+    <div class="col-md-6 offset-md-3">
+      <h1>Notifications</h1>
+
+      <h2>Email Notifications</h2>
+      <ul>
+        {% for notification in notifications %}
+            <li>{{ notification }}</li>
+          {% if notification.notification_type == 'email' %}
+            <li>{{ notification.content }}</li>
+          {% endif %}
+        {% endfor %}         
+      </ul>
+
+      <h2>Push Notifications</h2>
+      <ul>
+        {% for notification in notifications %}
+          {% if notification.notification_type == 'push' %}
+            <li>{{ notification.content }}</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+</div>
+{% endblock %}

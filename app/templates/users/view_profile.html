@@ -1,15 +1,15 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <div class="container">
-        <h1>View Profile</h1>
-        <p>Bio: {{ profile.bio }}</p>
-        <p>Website URL: <a href="{{ profile.website_url }}">{{ profile.website_url }}</a></p>
-        <p>Location: {{ profile.location }}</p>
-        {% if profile.profile_picture_url %}
-            <img src="{{ profile.profile_picture_url }}" alt="Profile Picture">
-        {% endif %}
-        <!-- Edit Profile Button -->
-        <a href="{{ url_for('users.edit_profile') }}" class="btn btn-primary">Edit Profile</a>
+<h1>User Profile</h1>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Profile Information</h5>
+        <p class="card_text">Bio: {{ profile.bio }}</p>
+        <p class="card_text">Website URL: {{ profile.website_url }}</p>
+        <p class="card_text">Location: {{ profile.location }}</p>
     </div>
+</div>
+<!-- Link to Edit Profile -->
+<a href="{{ url_for('users.edit_profile') }}" class="btn btn-primary">Edit</a>
 {% endblock %}

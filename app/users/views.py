@@ -197,7 +197,7 @@ def  user_settings():
             'background_color': request.form.get('background_color'),
             'color_contrast': request.form.get('color_contrast'),
             'social_media_connected': request.form.get('social_media_connected') == 'on',
-            'dark_mode': request.form.get('dark_mode') == 'on'
+            'dark_mode' : request.form.get('dark_mode') == 'on'
         }
 
         # Update user settings in the database
@@ -246,9 +246,7 @@ def notifications():
             notifications.extend(push_notifications)
 
     return render_template('users/notifications.html', notifications=notifications)
-
-
-            
+          
 @bp.before_app_request
 def load_auth_user():
     """ Load the currently authenticated user."""

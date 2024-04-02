@@ -2,12 +2,57 @@
 
 {% block content %}
 <h1>User Settings</h1>
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-    <ul>
-        {% for message in messages %}
-            <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
-{% endwith %}
+
+<form method="POST" action="{{ url_for('users.user_settings') }}">
+    <!-- Theme Preference -->
+    <label for="theme_preference">Theme Preference:</label>
+    <select name="theme_preference" id="theme_preference">
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+        <option value="auto">Auto</option>
+        <option value="default">Default</option>
+    </select><br>
+
+    <!-- Push Notifications -->
+    <input type="checkbox" id="push_notifications" name="push_notifications" id="push_notifications">
+    <label for="push_notifications">Push Notifications</label><br>
+
+    <!-- Email Notification -->
+    <input type="checkbox" id="email_notification" name="email_notification" id="email_notification">
+    <label for="email_notification">Email Notification</label><br>
+
+    <!-- Language -->
+    <label for="language">Language:</label>
+    <input type="text" name="language" id="language"><br>
+
+    <!-- Text Size -->
+    <label for="text_size">Text Size:</label>
+    <select name="text_size" id="text_size">
+        <option value="small">Small</option>
+        <option value="medium">Medium</option>
+        <option value="large">Large</option>
+    </select><br>
+
+    <!-- Background Color -->
+    <label for="background_color">Background Color:</label>
+    <input type="text" name="background_color" id="background_color"><br>
+
+    <!-- Color Contrast -->
+    <label for="color_contrast">Color Contrast:</label>
+    <select name="color_contrast" id="color_contrast">
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+    </select><br>
+
+    <!-- Social Media Connected -->
+    <input type="checkbox" name="social_media_connected" id="social_media_connected">
+    <label for="social_media_connected">Social Media Connected</label><br>
+
+    <!-- Dark Mode -->
+    <input type="checkbox" name="dark_mode" id="dark_mode">
+    <label for="dark_mode">Dark Mode</label><br>
+
+    <input type="submit" value="Save Settings">
+</form>
+{% endblock %}
