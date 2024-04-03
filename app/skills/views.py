@@ -49,7 +49,7 @@ def create_post():
         # Commit the transaction
         db.commit()
         flash('Post created successfully!', 'success')
-        return redirect(url_for('skills.view_posts'))
+        return redirect(url_for('skills.view_all_posts'))
     
     return render_template('skills/create_post.html')
 
@@ -64,7 +64,7 @@ def edit_post(post_id):
     # Check if the user is authorized to edit the post
     if post['user_id'] != g.user['id']:
         flash('You are not authorized to edit this post!', 'error')
-        return redirect(url_for('skills.view_posts'))
+        return redirect(url_for('skills.view_all_posts'))
     
     # Handle POST request
     if request.method == 'POST':
@@ -81,7 +81,7 @@ def edit_post(post_id):
                    (title, content, post_id))
         db.commit()
         flash('Post updated successfully!', 'success')
-        return redirect(url_for('skills.view_posts'))
+        return redirect(url_for('skills.view_all_posts'))
 
     return render_template('skills/edit_post.html', post=post)
 
@@ -96,13 +96,13 @@ def delete_post(post_id):
     # Check if the user is authorized to delete the post
     if post['user_id'] != g.user['id']:
         flash('You are not authorized to delete this post!', 'error')
-        return redirect(url_for('skills.view_posts'))
+        return redirect(url_for('skills.view_all_posts'))
     
     # Delete the post record
     db.execute("""DELETE FROM posts WHERE id = ?""", (post_id,))
     db.commit()
     flash('Post deleted successfully!', 'success')
-    return redirect(url_for('skills.view_posts'))
+    return redirect(url_for('skills.view_all_posts'))
 
 @bp.route('/posts')
 @login_required
@@ -124,7 +124,7 @@ def view_all_posts():
     next_post_ids = [post['id'] for post in posts[1:]] + [None]
 
     # Render the view
-    return render_template('skills/view_posts.html', posts=posts,
+    return render_template('skills/view_all_posts.html', posts=posts,
                            previous_post_ids=previous_post_ids,
                            next_post_ids=next_post_ids)
 
@@ -141,7 +141,7 @@ def add_comment(post_id):
                VALUES (?, ?, ?, ?)""", (content, user_id, post_id, datetime.utcnow()))
     db.commit()
     flash('Comment added successfully!', 'success')
-    return redirect(url_for('skills.view_posts'))
+    return redirect(url_for('skills.view_all_posts'))
 
 @bp.route('/posts/<int:post_id>/comments/<int:comment_id>/edit',
            methods=['GET', 'POST'])
@@ -155,7 +155,7 @@ def edit_comment(post_id, comment_id):
     # Check if the user is authorized to edit the comment
     if comment['user_id'] != g.user['id']:
         flash('You are not authorized to edit this comment!', 'error')
-        return redirect(url_for('skills.view_posts'))
+        return redirect(url_for('skills.view_all_posts'))
     
     # Handle POST request
     if request.method == 'POST':
@@ -172,7 +172,7 @@ def edit_comment(post_id, comment_id):
                    (content, comment_id))
         db.commit()
         flash('Comment updated successfully!', 'success')
-        return redirect(url_for('skills.view_posts'))
+        return redirect(url_for('skills.view_all_posts'))
     
     return render_template('skills/edit_comment.html', comment=comment)
 
@@ -196,7 +196,7 @@ def view_all_comments(post_id):
     previous_comment_ids = [None] + [comment['id'] for comment in comments[:-1]]
     next_comment_ids = [comment['id'] for comment in comments[1:]] + [None]
     
-    return render_template('skills/view_comments.html', comments=comments)
+    return render_template('skills/view_all_comments.html', comments=comments)
 
 @bp.route('/posts/<int:post_id>/comments/<int:comment_id>/delete',
            methods=['POST'])
@@ -210,10 +210,10 @@ def delete_comment(post_id, comment_id):
     # Check if the user is authorized to delete the comment
     if comment['user_id'] != g.user['id']:
         flash('You are not authorized to delete this comment!', 'error')
-        return redirect(url_for('skills.view_posts'))
+        return redirect(url_for('skills.view_all_posts'))
     
     # Delete the comment record
     db.execute("""DELETE FROM comments WHERE id = ?""", (comment_id,))
     db.commit()
     flash('Comment deleted successfully!', 'success')
-    return redirect(url_for('skills.view_posts'))
+    return redirect(url_for('skills.view_all_posts'))
