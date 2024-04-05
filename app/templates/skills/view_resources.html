@@ -1,30 +1,17 @@
 {% extends "layout.html "%}
 
 {% block header %}
-<div class="header">
-    <div class="left-header">
-        <form method="POST" action="{{ url_for('users.home') }}">
-            <button type="submit">Home</button>
-        </form>
-    </div>
-    <div class="right-header">
-        <form method="POST" class="search-form">
-            <input type="text" name="search_query" placeholder="Search...">
-            <button type="submit">Search</button>
-        </form>
-    </div> 
-</div>
-{% endblock %}
-
-{% block content %}
-<div class="container">
-    <h1>Resources</h1>
-    <ul>
-        {% for resource in resources %}
-            <li>
-                <a href="{{ url_for('resources.view_resource', resource_id=resource.id) }}">{{ resource.title }}</a>
-            </li>
-        {% endfor %}
-    </ul>
-</div>
+  <h2>Resources</h2>
+  <ul>
+    {% for resource in resources %}
+      <li>
+        <h3>{{ resource['title'] }}</h3>
+        {% if 'youtube.com' in resource['url'] %}
+          <iframe width="560" height="315" src="{{ resource['url'] }}" frameborder="0" allowfullscreen></iframe>
+        {% else %}
+          <img src="{{ resource['url'] }}" alt="{{ resource['title'] }}">
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
 {% endblock %}
