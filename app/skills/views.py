@@ -13,14 +13,21 @@ def view_resources():
     """ Route to view resources """
     db = get_db()
 
-    # If its a POST request, it means the user submitted a search query
-    if request.method == 'POST':
-        search_query = request.form.get('search_query', '').strip()
-
-        # Query the database to retrieve resources
-        resources = db.execute("""SELECT r1.id, r.title, rl.url
-                               FROM resource_links url
-                               JOIN resources r ON rl.resource_id """).fetchall()
+    # Handle search query
+    search_query = request.args.get('search_query', '').strip()
+    if search_query:
+        # Perform search query
+        resources = db.execute("""SELECT r.id, r.title, r.url
+                               FROM resources r
+                               JOIN resource_links r1 ON r.id = r1.resource_id
+                               WHERE r.title LIKE ?""", ('%' + search_query + '%',)).fetchall()
+        
+    else:
+        # Retrieve all resources if no search query
+        resources = db.execute("""SELECT r.id, r.title, r.url
+                               FROM resources r
+                               JOIN resource_links r1 ON r.id = r1.resource_id""").fetchall()
+    
     return render_template('skills/view_resources.html', resources=resources)
 
 @bp.route('/posts', methods=['GET', 'POST'])
@@ -110,14 +117,21 @@ def view_all_posts():
     """ Logic for viewing posts """
     db = get_db()
 
-    # If its a POST request, it means the user submitted a search query
-    if request.method == 'POST':
-        search_query = request.form.get('search_query', '').strip()
-
-        # Query the database to retrieve posts
+    # Handle search query
+    search_query = request.args.get('search_query', '').strip()
+    if search_query:
+        # Perform search query
         posts = db.execute("""SELECT p.id, p.title, p.content, p.url, p.created_at,
-                       u.username FROM posts p JOIN users u ON p.user_id = u.id
-                       ORDER BY p.created_at DESC""").fetchall()
+                           u.username FROM posts p JOIN users u ON p.user_id = u.id
+                           WHERE p.title LIKE ? OR p.content LIKE ?
+                           ORDER BY p.created_at DESC""",
+                           ('%' + search_query + '%', '%' + search_query + '%')).fetchall()
+        
+    else:
+        # Retrieve all posts if no search query
+        posts = db.execute("""SELECT p.id, p.title, p.content, p.url, p.created_at,
+                           u.username FROM posts p JOIN users u ON p.user_id = u.id
+                           ORDER BY p.created_at DESC""").fetchall()
     
     # Assuming posts is a list of post dictionaries
     previous_post_ids = [None] + [post['id'] for post in posts[:-1]]
@@ -176,7 +190,7 @@ def edit_comment(post_id, comment_id):
     
     return render_template('skills/edit_comment.html', comment=comment)
 
-@bp.route('/posts/<int:post_id>/comments', methods=['GET'])
+@bp.route('/posts/<int:post_id>/comments', methods=['GET', 'POST'])
 @login_required
 def view_all_comments(post_id):
     """ Logic to view comments"""
@@ -189,14 +203,63 @@ def view_all_comments(post_id):
         # Query the database to retrieve comments
         comments = db.execute("""SELECT c.id, c.content, c.created_at, u.username
                           FROM comments c JOIN users u ON c.user_id = u.id
-                          WHERE c.post_id = ? ORDER BY c.created_at DESC""",
-                          (post_id,)).fetchall()
+                          WHERE c.post_id = ? AND (c.content LIKE ?)
+                          ORDER BY c.created_at DESC""",
+                          (post_id, '%' + search_query + '%')).fetchall()
     
-    # Assuming comments is a list of comment dictionaries
-    previous_comment_ids = [None] + [comment['id'] for comment in comments[:-1]]
-    next_comment_ids = [comment['id'] for comment in comments[1:]] + [None]
+        # Assuming comments is a list of comment dictionaries
+        previous_comment_ids = [None] + [comment['id'] for comment in comments[:-1]]
+        next_comment_ids = [comment['id'] for comment in comments[1:]] + [None]
     
-    return render_template('skills/view_all_comments.html', comments=comments)
+        return render_template('skills/view_all_comments.html', comments=comments,
+                               previous_comment_ids=previous_comment_ids,
+                               next_comment_ids=next_comment_ids, search_query=search_query)
+    
+    else:
+        # If its a GET request, it means the user wants to view all comments
+        comments = db.execute("""SELECT c.id, c.content, c.created_at, u.username
+                          FROM comments c JOIN users u ON c.user_id = u.id
+                          WHERE c.post_id = ?
+                          ORDER BY c.created_at DESC""", (post_id,)).fetchall()
+    
+        # Assuming comments is a list of comment dictionaries
+        previous_comment_ids = [None] + [comment['id'] for comment in comments[:-1]]
+        next_comment_ids = [comment['id'] for comment in comments[1:]] + [None]
+    
+        return render_template('skills/view_all_comments.html', comments=comments,
+                               previous_comment_ids=previous_comment_ids,
+                               next_comment_ids=next_comment_ids)
+
+@bp.route('/search', methods=['POST'])
+@login_required
+def search():
+    """ Route to handle comprehensive search queries """
+    db = get_db()
+
+    # Handle search query
+    search_query = request.form.get('search_query', '').strip()
+    if search_query:
+        # Perform search query across posts, comments, and resources
+        results = db.execute("""SELECT 'post' AS type, id, title, content, url, created_at,
+                           NULL AS username FROM posts
+                           WHERE title LIKE ? OR content LIKE ?
+                           UNION
+                           SELECT 'comment' AS type, c.id, c.content, NULL AS title, NULL AS url,
+                           c.created_at, u.username FROM comments c
+                           JOIN users u ON c.user_id = u.id                          
+                           WHERE c.content LIKE ?
+                           UNION
+                           SELECT 'resource' AS type, r.id, r.title, NULL AS content, r1.url,
+                           NULL AS created_at, NULL AS username FROM resources r
+                           JOIN resource_links r1 ON r.id =r1.resource_id
+                           WHERE r.title LIKE ?""",
+                           ('%' + search_query + '%', '%' + search_query + '%',
+                            '%' + search_query + '%', '%' + search_query + '%')).fetchall()
+    else:
+        # Redirect to home route if no search query
+        return redirect(url_for('users.home'))
+    
+    return render_template('skills/search.html', results=results, search_query=search_query)
 
 @bp.route('/posts/<int:post_id>/comments/<int:comment_id>/delete',
            methods=['POST'])

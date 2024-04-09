@@ -246,6 +246,12 @@ def notifications():
             notifications.extend(push_notifications)
 
     return render_template('users/notifications.html', notifications=notifications)
+
+@bp.route('/home')
+@login_required
+def home():
+    """ Route to render the home page, restricted to authenticated users"""
+    return render_template('users/home.html')
           
 @bp.before_app_request
 def load_auth_user():
