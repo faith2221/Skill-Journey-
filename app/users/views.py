@@ -3,6 +3,7 @@ import re
 from flask import request, render_template, Blueprint, session, url_for, redirect, flash, g
 from flask import current_app
 from app.db import get_db
+from app.db_backup import backup_database
 from app.utils import form_errors, validate
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -13,6 +14,12 @@ bp = Blueprint('users', __name__, url_prefix='/users')
 # Path where profile pictures will be uploaded
 UPLOAD_FOLDER = 'app/uploads'
 ALLOWED_EXTENSIONS = {'pdf', 'txt', 'png', 'jpg', 'jpeg', 'gif'}
+
+def is_admin():
+    """ Check if the user is an admin."""
+    if g.user and g.user.get('is_admin'):
+        return True
+    return False
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():

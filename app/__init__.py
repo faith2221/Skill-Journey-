@@ -1,4 +1,5 @@
 import os
+import datetime
 from flask import Flask, send_from_directory
 from pathlib import Path
 
@@ -9,7 +10,7 @@ def create_app():
     app.config.from_mapping(
         DATABASE=str(Path(app.instance_path) / 'db.sqlite3'),
         SECRET_KEY='dev',
-        UPLOAD_FOLDER=Path(__file__).parent / 'uploads'
+        UPLOAD_FOLDER=Path(__file__).parent / 'uploads',
         ALLOWED_EXTENSIONS = {'pdf', 'txt', 'png', 'jpg', 'jpeg', 'gif'}
     )
 
@@ -26,11 +27,16 @@ def create_app():
     from app.skills.views import bp as skills_bp
     app.register_blueprint(skills_bp)
 
+    from app.admin.views import bp as admin_bp
+    app.register_blueprint(admin_bp)
+
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
 
-    from app import db
+    # Initialize the database and backup
+    from app import db, db_backup
     db.init_app(app)
+    db_backup.init_app(app)
 
     # Ensure the upload folder exists
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -39,5 +45,5 @@ def create_app():
     def uploads(filename):
         """ Serve uploaded files."""
         return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
-
+    
     return app

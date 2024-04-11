@@ -22,11 +22,6 @@ def copyright():
     """ Route to display copyright information """
     return render_template('copyright.html')
 
-@bp.route('/home')
-def home():
-    """ Route to render the home page, restricted to authenticated users"""
-    return render_template('home.html')
-
 
 
 

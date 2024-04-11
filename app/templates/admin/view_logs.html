@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block content %}
+   <h1>View Logs</h1>
+   <ul>
+       {% for log in logs %}
+       <li>{{ log }} <form action="{{ url_for('admin.delete_logs', log_id=log_id) }}" method="post">
+           <button type="submit">Delete</button>
+       </form></li>
+       {% endfor %}
+   </ul>
+{% endblock %}

@@ -1,6 +1,7 @@
 from flask import request, render_template, Blueprint, session, url_for, redirect, flash, g
 from app.users.login_utils import login_required
 from app.db import get_db
+from app.db_backup import backup_database
 from datetime import datetime
 from app.utils import form_errors, validate
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -133,7 +134,7 @@ def view_all_posts():
                            u.username FROM posts p JOIN users u ON p.user_id = u.id
                            ORDER BY p.created_at DESC""").fetchall()
     
-    # Assuming posts is a list of post dictionaries
+    # Get IDs for pagination
     previous_post_ids = [None] + [post['id'] for post in posts[:-1]]
     next_post_ids = [post['id'] for post in posts[1:]] + [None]
 
@@ -207,7 +208,7 @@ def view_all_comments(post_id):
                           ORDER BY c.created_at DESC""",
                           (post_id, '%' + search_query + '%')).fetchall()
     
-        # Assuming comments is a list of comment dictionaries
+        # Get IDs for pagination
         previous_comment_ids = [None] + [comment['id'] for comment in comments[:-1]]
         next_comment_ids = [comment['id'] for comment in comments[1:]] + [None]
     

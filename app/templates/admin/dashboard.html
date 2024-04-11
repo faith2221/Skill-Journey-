@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block content %}
+   <h1>Admin Dashbooard</h1>
+   <p>Welcome to the admin dashboard. You can manage users, view logs, and access analytics from here.</p>
+   <nav class="vertical-nav">
+      <ul>
+          <li><a href="{{ url_for(admin.backup') }}">Backup</a></li>
+          <li><a href="{{ url_for(admin.restore') }}">Restore</a></li>
+          <li><a href="{{ url_for(admin.view_all_users') }}">Users</a></li>
+          <li><a href="{{ url_for(admin.analytics') }}">Analytics</a></li>
+          <li><a href="{{ url_for(admin.view_logs') }}">Logs</a></li>
+          <li><a href="{{ url_for(admin.backup') }}">Log</a></li>
+      </ul>
+   </nav>
+
+{% endblock %}
+
+<script>
+    function toggleNav() {
+        var menuItems = document.getElementById("menu-items");
+        menuItems.classList.toggle("collapsed");
+    }
+</script>
