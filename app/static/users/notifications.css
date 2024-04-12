@@ -1,0 +1,44 @@
+/* Container styles */
+.container {
+    margin-top: 50px
+}
+
+/* Heading styles */
+h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 24px;
+    color: #007bff;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+/* List styles */
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+    border-bottom: 1px solid  #ccc;
+    padding-bottom: 10px;
+}
+
+/* Styles for  notifications */
+ul.email-notifications li {
+    color: #007bff;
+    font-style: italic;
+}
+
+ul.push-notifications li {
+    color: #28a745;
+    font-weight: bold;
+}

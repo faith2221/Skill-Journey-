@@ -1,5 +1,12 @@
 {% extends "layout.html" %}
 
+{% block head %}
+    {{ super()}}
+    <!-- link to specific CSS file for login page -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='users/community.css') }}">
+{% endblock %}
+
+
 {% block content %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">

@@ -1,0 +1,57 @@
+/* Container styles */
+.container {
+    margin-top: 50px;
+}
+
+/* Form label styles */
+.form-label {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Input field styles */
+.form-control {
+    border-radius: 20px; /* Round corners of input fields */
+    border: 2px solid #ccc; /* Light gray border */
+    padding: 10px; 
+}
+
+/* Error message styles */
+.invalid-feedback {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* Primary button styles */
+.btn-primary {
+    background-color: #007bff; /* Blue color for primary button */
+    border-color: #007bff;
+    border-radius: 20px;
+    padding: 10px 20px; /* Padding inside button */
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff; /*White text color */
+    transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; 
+}
+
+/* Margin-top styles */
+.mt-3 {
+    margin-top: 15px; 
+}
+
+/* Sign Up link styles */
+.mt-3 a {
+    color: #007bff; /* Blue color for links */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease; /* Smooth transition on hover */
+}
+
+.mt-3 a:hover {
+    color: #0056b3;
+}

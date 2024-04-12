@@ -123,54 +123,43 @@ def edit_profile():
     # Fetch the profile information
     profile= db.execute("""SELECT * FROM profiles WHERE user_id = ?""",
                         (user_id,)).fetchone()
-    try:
-        if request.method == 'POST':
-            # Fetch existing user data
-            existing_user = db.execute("""SELECT * FROM users WHERE id = ?""",
-                                       (user_id,)).fetchone()
-        
-        # Get form data
-        bio = request.form['bio']
-        website_url = request.form['website_url']
-        location = request.form ['location']
+    if request.method == 'POST':
+        try:
+            # Get form data  
+            bio = request.form['bio']
+            website_url = request.form['website_url']
+            location = request.form ['location']
 
-        # Handle profile picture upload
-        if 'profile_picture' in request.files:
-            profile_picture = request.files['profile_picture']
-            if profile_picture.filename != '':
-                filename = secure_filename(profile_picture.filename)
-                profile_picture.save(os.path.join(current_app.config[UPLOAD_FOLDER], filename))
-                profile_picture_url = url_for('static', filename='uploads/' + filename)
+            # Handle profile picture upload
+            if 'profile_picture' in request.files:
+                profile_picture = request.files['profile_picture']
+                if profile_picture.filename != '':
+                    filename = secure_filename(profile_picture.filename)
+                    profile_picture.save(os.path.join(current_app.config[UPLOAD_FOLDER], filename))
+                    profile_picture_url = 'uploads/' + filename
 
-                # Update profile picture URL in the database
-                db.execute("""UPDATE profiles
-                           SET profile_picture_url = ? WHERE user_id = ?""",
-                           (profile_picture_url, user_id))
+                    # Update profile picture URL in the database
+                    db.execute("""UPDATE profiles
+                               SET profile_picture_url = ? WHERE user_id = ?""",
+                               (profile_picture_url, user_id))
+                else:
+                    profile_picture_url = None
             else:
                 profile_picture_url = None
-        else:
-            profile_picture_url = None
-
-        # Validate and update email if necessary
-        email = request.form['email']
-        existing_email = db.execute("""SELECT id FROM users WHERE email = ?""", (email,)).fetchone()
-        if existing_email and existing_email['id'] != user_id:
-            flash('Email already exists', 'error')
-            return render_template('users/edit_profile.html', profile=profile)
                                     
-        # Update profile data in the database
-        db.execute("""UPDATE profiles
-                   SET bio = ?, profile_picture_url = ?, website_url = ?,
-                   location = ? WHERE user_id = ?""", (bio, profile_picture_url,
-                   website_url, location, user_id))
-        db.commit()
+            # Update profile data in the database
+            db.execute("""UPDATE profiles
+                       SET bio = ?, profile_picture_url = ?, website_url = ?,
+                       location = ? WHERE user_id = ?""", (bio, profile_picture_url,
+                       website_url, location, user_id))
+            db.commit()
 
-        flash('Profile updated successfully!', 'success')
-        return redirect(url_for('users.view_profile'))
+            flash('Profile updated successfully!', 'success')
+            return redirect(url_for('users.view_profile'))
 
-    except Exception as e:
-        flash('An error occurred while updating the profile!', 'error')
-        current_app.logger.error(f"Error updating profile: {e}")
+        except Exception as e:
+            flash('An error occurred while updating the profile!', 'error')
+            current_app.logger.error(f"Error updating profile: {e}")
 
     return render_template('users/edit_profile.html', profile=profile)
        
@@ -216,8 +205,11 @@ def  user_settings():
                        (user_id, setting_name, setting_value, setting_value))
         db.commit()
         flash('User settings updated successfully!', 'success')
+        return redirect(url_for('users.home'))
 
     # Fetch the current user settings from the database
+    db = get_db()
+    user_id = g.user['id']
     user_settings = db.execute("""SELECT setting_name, setting_value FROM user_settings
                                    WHERE user_id = ?""", (user_id,)).fetchall()
         
@@ -234,7 +226,7 @@ def notifications():
                                        WHERE user_id = ?""", (user_id,)).fetchall()
     
     # Extract user preferences for notification types
-    preferences = {setting['setting_name']: setting['setting_value'] for setting in user_settings}
+    preferences = {setting['setting_name']: setting['setting_value'] for setting in notification_settings}
 
     #Initializes an empty list to store notifications
     notifications = []

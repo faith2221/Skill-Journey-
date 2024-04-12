@@ -2,6 +2,7 @@ import os
 import datetime
 from flask import Flask, send_from_directory
 from pathlib import Path
+from app.db_backup import backup_database
 
 # Configure the app
 def create_app():
@@ -34,9 +35,8 @@ def create_app():
     app.register_blueprint(main_bp)
 
     # Initialize the database and backup
-    from app import db, db_backup
+    from app import db
     db.init_app(app)
-    db_backup.init_app(app)
 
     # Ensure the upload folder exists
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)

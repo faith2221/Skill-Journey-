@@ -1,7 +1,7 @@
 .logo {
     display: flex;
     align-items: center;
-    color: #333;
+    color: #ff6347;
     font-size: 18px;
 }
 
@@ -11,4 +11,20 @@
 
 .logo-text span:first-letter {
     text-transform: uppercase;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #87ceeb;
+}
+
+.navbar-nav .nav-link {
+    color: #800080;
+    font-weight: bold;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #4b0082;
 }

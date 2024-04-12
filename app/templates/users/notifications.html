@@ -1,5 +1,11 @@
 {% extends "layout.html" %}
 
+{% block head %}
+    {{ super()}}
+    <!-- link to specific CSS file for login page -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='users/notifications.css') }}">
+{% endblock %}
+
 {% block contennt %}
 <div class="container">
     <div class="col-md-6 offset-md-3">
