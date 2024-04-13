@@ -11,7 +11,7 @@ def create_app():
     app.config.from_mapping(
         DATABASE=str(Path(app.instance_path) / 'db.sqlite3'),
         SECRET_KEY='dev',
-        UPLOAD_FOLDER=Path(__file__).parent / 'uploads',
+        UPLOAD_FOLDER=Path(__file__).parent / 'static' / 'uploads',
         ALLOWED_EXTENSIONS = {'pdf', 'txt', 'png', 'jpg', 'jpeg', 'gif'}
     )
 

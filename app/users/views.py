@@ -12,7 +12,7 @@ from app.users.login_utils import login_required
 bp = Blueprint('users', __name__, url_prefix='/users')
 
 # Path where profile pictures will be uploaded
-UPLOAD_FOLDER = 'app/uploads'
+UPLOAD_FOLDER = 'app/static/uploads'
 ALLOWED_EXTENSIONS = {'pdf', 'txt', 'png', 'jpg', 'jpeg', 'gif'}
 
 def is_admin():
@@ -136,7 +136,7 @@ def edit_profile():
                 if profile_picture.filename != '':
                     filename = secure_filename(profile_picture.filename)
                     profile_picture.save(os.path.join(current_app.config[UPLOAD_FOLDER], filename))
-                    profile_picture_url = 'uploads/' + filename
+                    profile_picture_url = url_for ('static', filename='uploads/' + filename)
 
                     # Update profile picture URL in the database
                     db.execute("""UPDATE profiles
@@ -162,19 +162,13 @@ def edit_profile():
             current_app.logger.error(f"Error updating profile: {e}")
 
     return render_template('users/edit_profile.html', profile=profile)
-       
-@bp.route('/community')
-@login_required
-def community():
-    """ Route to post and comment """
-    return render_template('users/community.html')
 
 @bp.route('/logout')
 def logout():
     """ Route to log out a user"""
     session.clear()
     flash('Logged out successfully!', category='info')
-    return redirect(url_for('users.login'))
+    return redirect(url_for('main.landing_page'))
 
 @bp.route('/settings', methods=['GET', 'POST'])
 @login_required

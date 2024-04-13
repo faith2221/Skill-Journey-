@@ -1,41 +1,42 @@
 {% extends "layout.html" %}
 
-{% block head %}
-    {{ super()}}
-    <!-- link to specific CSS file for home -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='users/home.css') }}">
-{% endblock %}
-
 {% block content %}
-<div class="navbar" id="navbar">
-  <div class="user-info">
-    <div class="profile-picture">
-      <img src="user_profile_picture.jpg" alt="Profile Picture">
+<div class="row">
+    <div class="col-md-6">
+      <div class="dropdown">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">Menu</button>
+        <ul class="dropdown-menu">
+          <li class="dropdown-item"><a class="nav-link" href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+          <li class="dropdown-item"><a class="nav-link" href="{{ url_for('skills.view_resources') }}">Resources</a></li>
+          <li class="dropdown-item"><a class="nav-link" href="{{ url_for('skills.view_all_posts') }}">Community</a></li>
+          <li class="dropdown-item"><a class="nav-link" href="{{ url_for('users.user_settings') }}">Settings</a></li>
+          <li class="dropdown-item"><a class="nav-link" href="{{ url_for('users.notifications') }}">Notifications</a></li>
+        </ul>
+      </div>
     </div>
-    <div class="username">
-      <p>{{ g.user.username }}</p>
+    <div class="col-md-6">
+      <ul class="nav nav-pills justify-content-end ml-auto">
+        <li class="active">
+          <form action="{{ url_for('users.register') }}">
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+          </form>
+        </li>
+        <li class="active">
+          <form action="{{ url_for('users.login') }}">
+            <button type="submit" class="btn btn-primary">Sign In</button>
+          </form>
+        </li>
+        <li class="active">
+          <form action="{{ url_for('users.logout') }}">
+            <button type="submit" class="btn btn-primary">Log Out</button>
+          </form>
+        </li>
+      </ul>
     </div>
-  </div>
-  <ul>
-    <li><a href="{{ url_for('admin.dashboard') }}">Dashbooard</a></li>
-    <li><a href="{{url_for ('users.community') }}">Community</a></li>
-    <li><a href="{{ url_for('users.view_profile') }}">Profile</a></li>
-    <li><a href="{{ url_for('users.user_settings') }}">Settings</a></li>
-    <li><a href="{{ url_for('users.notifications') }}">Notifications</a></li>
-    <li><a href="{{ url_for('users.logout') }}">Log Out</a></li>
-  </ul>
-  <div class="toggle-btn" onclick="toggleNavbar()">
-    &#9776;
   </div>
 </div>
-<div class="content">
+<div class="container text-center">
   <h1>Welcome to SkillJourney, {{ g.user.username }}!</h1>
   <p>This is where u can access and view resources.</p>
 </div>
-<script>
-  function toggleNavbar() {
-    var navbar = document.getElementById("navbar");
-    navbar.classList.toggle('collapsed');
-    }
-</script>
 {% endblock %}

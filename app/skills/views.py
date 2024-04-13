@@ -18,16 +18,14 @@ def view_resources():
     search_query = request.args.get('search_query', '').strip()
     if search_query:
         # Perform search query
-        resources = db.execute("""SELECT r.id, r.title, r.url
-                               FROM resources r
-                               JOIN resource_links r1 ON r.id = r1.resource_id
-                               WHERE r.title LIKE ?""", ('%' + search_query + '%',)).fetchall()
+        resources = db.execute("""SELECT id, url
+                               FROM resource_links
+                               WHERE title LIKE ?""", ('%' + search_query + '%',)).fetchall()
         
     else:
         # Retrieve all resources if no search query
-        resources = db.execute("""SELECT r.id, r.title, r.url
-                               FROM resources r
-                               JOIN resource_links r1 ON r.id = r1.resource_id""").fetchall()
+        resources = db.execute("""SELECT id, url
+                               FROM resource_links""").fetchall()
     
     return render_template('skills/view_resources.html', resources=resources)
 
@@ -189,7 +187,7 @@ def edit_comment(post_id, comment_id):
         flash('Comment updated successfully!', 'success')
         return redirect(url_for('skills.view_all_posts'))
     
-    return render_template('skills/edit_comment.html', comment=comment)
+    return render_template('skills/edit_comment.html', post_id=post_id, comment_id=comment_id)
 
 @bp.route('/posts/<int:post_id>/comments', methods=['GET', 'POST'])
 @login_required

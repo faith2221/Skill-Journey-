@@ -1,15 +1,18 @@
+/* layout.css */
 .logo {
     display: flex;
     align-items: center;
-    color: #ff6347;
+    color: #007bff;
     font-size: 18px;
+    margin-right: auto;
 }
 
 .logo-text {
-    text-transform: lowercase;
+    text-transform: capitalize;
 }
 
 .logo-text span:first-letter {
+    margin-right: 10px;
     text-transform: uppercase;
 }
 
@@ -17,14 +20,22 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Arial', sans-serif;
-    background-color: #87ceeb;
+    background-color: #C8A2C8;
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-grow: 1;
 }
 
 .navbar-nav .nav-link {
-    color: #800080;
+    color: #6c757d;
     font-weight: bold;
+    margin-left: 20px;
 }
 
 .navbar-nav .nav-link:hover {
-    color: #4b0082;
+    color: #0056b3;
 }
