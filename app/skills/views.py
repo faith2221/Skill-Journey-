@@ -8,26 +8,17 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 bp = Blueprint('skills', __name__, url_prefix='/skills')
 
-@bp.route('/resources')
+@bp.route('/media')
 @login_required
-def view_resources():
-    """ Route to view resources """
+def view_media():
+    """ Route to view media resources """
     db = get_db()
 
-    # Handle search query
-    search_query = request.args.get('search_query', '').strip()
-    if search_query:
-        # Perform search query
-        resources = db.execute("""SELECT id, url
-                               FROM resource_links
-                               WHERE title LIKE ?""", ('%' + search_query + '%',)).fetchall()
-        
-    else:
-        # Retrieve all resources if no search query
-        resources = db.execute("""SELECT id, url
-                               FROM resource_links""").fetchall()
+    # Retrieve all media links
+    media_links = db.execute("""SELECT type, link
+                               FROM media""").fetchall()
     
-    return render_template('skills/view_resources.html', resources=resources)
+    return render_template('skills/view_media', media_links=media_links)
 
 @bp.route('/posts', methods=['GET', 'POST'])
 @login_required

@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1>Media Links</h1>
+    <ul>
+        {% for media in media_links %}
+            {% if media=[0] == 'video' %}
+                <li><a href="{{ media[1] }}">Watch Video</a></li>
+            {% elif media[0] == 'book' %}
+                <li><a href="{{ media[1] }}">Read Book</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endblock %}
