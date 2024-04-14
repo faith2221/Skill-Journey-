@@ -1,3 +1,4 @@
+import math
 from flask import request, render_template, Blueprint, session, url_for, redirect, flash, g
 from app.users.login_utils import login_required
 from app.db import get_db
@@ -14,11 +15,32 @@ def view_media():
     """ Route to view media resources """
     db = get_db()
 
-    # Retrieve all media links
-    media_links = db.execute("""SELECT type, link
-                               FROM media""").fetchall()
+    # Pagination parameters
+    page = request.args.get('page', 1, type=int)
+    per_page = 10
+
+    # Search query 
+    search_query = request.args.get('search_query', '').strip()
+    search_filter = '%' + search_query + '%'
+
+    # Retrieve total number of media links for pagination
+    total_media = db.execute("""SELECT COUNT(*) FROM media WHERE title LIKE ?""",
+                             (search_filter,)).fetchone()[0]
     
-    return render_template('skills/view_media', media_links=media_links)
+    # Calculate the total number of pages
+    total_pages = math.ceil(total_media / per_page)
+
+    # Retrieve media links for the current page
+    offset = (page - 1) * per_page
+    media_links = db.execute("""SELECT title, url
+                             FROM media
+                             WHERE  title LIKE ?
+                             ORDER BY id DESC
+                             LIMIT ? OFFSET ?""",
+                             (search_filter, per_page, offset)).fetchall()
+    
+    return render_template('skills/view_media.html', media_links=media_links,
+                           total_pages=total_pages, current_page=page)
 
 @bp.route('/posts', methods=['GET', 'POST'])
 @login_required

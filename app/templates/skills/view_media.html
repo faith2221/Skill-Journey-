@@ -1,14 +1,62 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <h1>Media Links</h1>
-    <ul>
+<div class="container">
+      <ul class="nav nav-pills justify-content-end ml-auto">
+        <li class="active">
+          <form action="{{ url_for('users.home') }}">
+            <button type="submit" class="btn btn-primary">Home</button>
+          </form>
+        </li>
+        <li class="active">
+          <form action="{{ url_for('users.logout') }}">
+            <button type="submit" class="btn btn-primary">Log Out</button>
+          </form>
+        </li>
+        <li>
+          <form class="form-inline" action="{{ url_for('skills.search') }}" method="POST">
+              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
+          </form>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Displays media links in cards using url and title -->
+    <h1 style="text-align: center; color: white; font-style: italic;">Skill Resources</h1>
+    <div class="row">
         {% for media in media_links %}
-            {% if media=[0] == 'video' %}
-                <li><a href="{{ media[1] }}">Watch Video</a></li>
-            {% elif media[0] == 'book' %}
-                <li><a href="{{ media[1] }}">Read Book</a></li>
-            {% endif %}
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm" style="background-color: #87CEEB">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ media['title'] }}</h5>
+                        {% if 'youtube.com' in media['url'] %}
+                            <p class="card-text"><a href="{{ media['url'] }}" target="_blank">{{ media['url'] }}</a></p>
+                        {% else %}
+                            <p class="card-text">PDF: <a href="{{ media['url'] }}">{{ media['title'] }}</a></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
         {% endfor %}
-    </ul>
+      </div>
+
+    <!-- Pagination (Initially Hidden) -->
+    <nav aria=-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if current_page != 1 %}
+                 <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                 <li class="page-item"><a class="page-link" href="?page={{ current_page - 1 }}">Previous</a></li>
+            {% endif %}
+            {% for page_num in range(1, total_pages + 1) %}
+                <li class="page-item {% if page_num == current_page %}active{% endif %}">
+                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                </li>                
+            {% endfor %}
+            {% if current_page != total_pages %}
+                 <li class="page-item"><a class="page-link" href="?page={{ current_page + 1 }}">Next</a></li>
+                 <li class="page-item"><a class="page-link" href="?page={{ total_pages }}">Last</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
 {% endblock %}
