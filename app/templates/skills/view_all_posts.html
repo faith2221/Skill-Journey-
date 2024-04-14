@@ -1,20 +1,23 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <h1>All Posts</h1>
-  <ul>
-    {% for post in posts %}
-      <li>
-        <h3>{{ post['post.title'] }}</h3>
-        <p>{{ post['post.content'] }}</p>
-        <p>Created by: {{ post['username'] }}</p>
-        <p><a href="{{ post['url'] }}">Read more</a></p>
-        <p><a href="{{ url_for('skills.edit_post', post_id=post['id']) }}">Edit</a></p>
-        <form method="post" action="{{ url_for('skills.delete_post', post_id=post['id']) }}" onsubmit="return confirm('Are you sure you want to delete this post?')"></form>
-          <button type="submit">Delete</button>
-        </form>
-      </li>
-    {% endfor %}
-  </ul>
-  
+<div class="container">
+      <ul class="nav nav-pills justify-content-end ml-auto">
+        <li class="active">
+          <form action="{{ url_for('skills.create_post') }}">
+            <button type="submit" class="btn btn-primary">Create Post</button>
+          </form>
+        </li>
+        <li class="active">
+          <form action="{{ url_for('users.home') }}">
+            <button type="submit" class="btn btn-primary">Home</button>
+          </form>
+        </li>
+        <li class="active">
+          <form action="{{ url_for('users.logout') }}">
+            <button type="submit" class="btn btn-primary">Log Out</button>
+          </form>
+        </li>
+      </ul>
+</div>
 {% endblock %}
