@@ -1,5 +1,4 @@
 DROP TABLE IF EXISTS `media`;
-DROP TABLE IF EXISTS `posts`;
 DROP TABLE IF EXISTS `comments`;
 
 CREATE TABLE media (
@@ -64,24 +63,13 @@ INSERT INTO media (title, url) VALUES
 ('Interview Skills', 'https://www.youtube.com/watch?v=sYV37t8vDgQ&pp=ygUQSW50ZXJ2aWV3IHNraWxscw%3D%3D'),
 ('Interview Skills', 'https://www.youtube.com/watch?v=GzYDwIFtxII&pp=ygUQSW50ZXJ2aWV3IHNraWxscw%3D%3D');
 
-CREATE TABLE posts (
-    `id` INTEGER PRIMARY KEY AUTOINCREMENT,
-    `title` VARCHAR(255) NOT NULL,
-    `content` TEXT NOT NULL,
-    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `publish` DATE default CURRENT_TIMESTAMP,
-    `url` VARCHAR(255),
-    `user_id` INTEGER NOT NULL,
-    FOREIGN KEY (`user_id`) REFERENCES users(`id`)
-);
-
 CREATE TABLE comments (
     `id` INTEGER PRIMARY KEY AUTOINCREMENT,
     `content` TEXT NOT NULL,
     `url` VARCHAR(255),
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `user_id` INTEGER NOT NULL,
-    `post_id` INTEGER NOT NULL,
+    `parent_comment_id` INTEGER,
     FOREIGN KEY (`user_id`) REFERENCES users (`id`),
-    FOREIGN KEY (`post_id`) REFERENCES posts (`id`)  
+    FOREIGN KEY (`parent_comment_id`) REFERENCES comments (`id`)
 );

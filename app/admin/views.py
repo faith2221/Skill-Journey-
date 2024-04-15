@@ -33,19 +33,6 @@ def delete_user(user_id):
     flash('User deleted successfully', 'success')
     return redirect(url_for('admin.view_all_users'))
 
-@bp.route('/posts/<int:post_id>/delete', methods=['POST'])
-@login_required
-def delete_user_post(post_id):
-    """ Logic to delete a user post"""
-    db = get_db()
-    
-    # Delete user posts
-    db.execute('DELETE FROM posts WHERE id = ?', (post_id,))
-    db.commit()
-
-    flash('Post deleted successfully', 'success')   
-    return redirect(url_for('admin.view_all_users'))
-
 @bp.route('/comments/<int:comment_id>/delete', methods=['POST'])
 @login_required
 def delete_user_comment(comment_id):

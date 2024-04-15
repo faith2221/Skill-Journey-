@@ -13,17 +13,6 @@ CREATE TABLE users (
     `password_hash` VARCHAR(120) NOT NULL
 );
 
-CREATE TABLE profiles (
-    `id` INTEGER PRIMARY KEY AUTOINCREMENT,
-    `user_id` INTEGER UNIQUE NOT NULL,
-    `registration_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `bio` TEXT,
-    `profile_picture_url` VARCHAR(255),
-    `website_url` VARCHAR(255),
-    `location` VARCHAR(100),
-    FOREIGN KEY (`user_id`) REFERENCES users(`id`)
-);
-
 CREATE TABLE notifications (
     `id` INTEGER PRIMARY KEY AUTOINCREMENT,
     `user_id` INTEGER NOT NULL,
@@ -47,7 +36,7 @@ INSERT INTO `user_settings` (`user_id`, `setting_name`, `setting_value`) VALUES
     (1, 'theme_preference', 'light'),
     (1, 'push_notifications', '1'),
     (1, 'email_notifications', '1'),
-    (1, 'language', 'en'),
+    (1, 'language', 'English'),
     (1,'text_size', 'medium'),
     (1, 'text_color', 'black'),
     (1, 'background_color', 'white'),

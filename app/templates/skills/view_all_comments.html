@@ -1,17 +1,31 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <h2>All Comments</h2>
-  <ul>
-    {% for comment in comments %}
-      <li>
-        <p>{{ comment['content'] }}</p>
-        <p>Created by: {{ comment['username'] }}</p>
-        <p>{{ comment['created at'] }}</p>
-        <p><a href="{{ url_for('skills.edit_comment', post_id=post_id, comment_id=comment['id']) }}">Edit</a></p>
-        <form method="post" action="{{ url_for('skills.delete_comment', post_id=post_id, comment_id=comment['id']) }}" onsubmit="return confirm('Are you sure you want to delete this comment?')">
-          <button type="submit">Delete</button>
-        </form>
+<div class="container">
+    <ul class="nav nav-pills justify-content-end ml-auto">
+      <li class="active">
+          <form action="{{ url_for('users.home') }}">
+            <button type="submit" class="btn btn-primary">Home</button>
+          </form>
       </li>
-    {% endfor %}  
-  </ul>
+      <li class="active">
+          <form action="{{ url_for('skills.add_comment') }}" method="GET">
+            <button type="submit" class="btn btn-primary">Post a Comment</button>
+          </form>
+      </li>
+      <li>
+          <form class="form-inline" action="{{ url_for('skills.search') }}" method="POST">
+              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
+          </form>
+      </li>
+    </ul>
+</div>
+<!-- Displays Comments -->
+{% for commen in comments %}
+  <div class="comment">
+      <p>{{ comment.text }}</p>
+      <a href="{{ url_for('skills.reply_to_comment', comment_id=comment.id) }}">Reply</a>
+  </div>
+{% endfor %}
+
+{% endblock %}
