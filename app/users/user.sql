@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS `users`;
-DROP TABLE IF EXISTS `profiles`;
+DROP TABLE IF EXISTS `notifications`;
+DROP TABLE IF EXISTS `user_settings`;
 
 CREATE TABLE users (
     `id` INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -42,7 +43,5 @@ INSERT INTO `user_settings` (`user_id`, `setting_name`, `setting_value`) VALUES
     (1, 'background_color', 'white'),
     (1, 'color_contrast', 'normal'),
     (1, 'social_media_connected', '1'),
-    (1, 'dark_mode', '0')
-
---
+    (1, 'dark_mode', '0');
     

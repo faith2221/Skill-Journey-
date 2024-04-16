@@ -1,24 +1,31 @@
 {% extends "layout.html" %}
 
 {% block content %}
-   <h1>Admin Dashbooard</h1>
-   <p>Welcome to the admin dashboard. You can manage users, view logs, and access analytics from here.</p>
-   <nav class="vertical-nav">
-      <ul>
-          <li><a href="{{ url_for(admin.backup') }}">Backup</a></li>
-          <li><a href="{{ url_for(admin.restore') }}">Restore</a></li>
-          <li><a href="{{ url_for(admin.view_all_users') }}">Users</a></li>
-          <li><a href="{{ url_for(admin.analytics') }}">Analytics</a></li>
-          <li><a href="{{ url_for(admin.view_logs') }}">Logs</a></li>
-          <li><a href="{{ url_for(admin.backup') }}">Log</a></li>
+<div class="container">
+      <ul class="nav nav-pills justify-content-end ml-auto">
+        <li class="active">
+          <form action="{{ url_for('users.home') }}">
+            <button type="submit" class="btn btn-primary">Home</button>
+          </form>
+        </li>
+        <li class="active">
+          <form action="{{ url_for('admin.backup') }}">
+            <button type="submit" class="btn btn-primary">Backup</button>
+          </form>
+        </li>
+        <li class="active">
+          <form action="{{ url_for('admin.restore') }}">
+            <button type="submit" class="btn btn-primary">Restore</button>
+          </form>
+        </li>
       </ul>
-   </nav>
-
+</div>
+<div class="container text-center" style="font-style: italic;">
+  <h1>Welcome to SkillJourney Admin Dashboard, {{ g.user.username }}!</h1>
+  <p>Here you can manage all administrative tasks for the system.</p>
+  <p>These administrative tasks include the following:</p>
+  <p>Backup Database, and  Restore Databas.</p>
+</div>
 {% endblock %}
-
-<script>
-    function toggleNav() {
-        var menuItems = document.getElementById("menu-items");
-        menuItems.classList.toggle("collapsed");
-    }
-</script>
+   
+ 

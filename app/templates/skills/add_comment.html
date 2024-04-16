@@ -5,19 +5,18 @@
     <h1 class="text-center mb-4">Post a Comment</h1>
     <div class="card">
         <div class="card-body">
-            <form method="POST" action="{{ url_for('skills.add_comment', comment_id=comment_id) }}">
+            <form method="POST" action="{{ url_for('skills.add_comment') }}">
                 <div class="form-group">
                     <label for="content">Content</label>
                     <textarea class="form-control" id="content" name="content" rows="4" required></textarea>
                 </div>
-                <!-- Submit form -->
-                <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
     </div>
     <!-- Cancel comment -->
     <form method="POST" action="{{ url_for('skills.cancel_comment') }}">
         <button type="submit" class="btn btn-danger">Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
 

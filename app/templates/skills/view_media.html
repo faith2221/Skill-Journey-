@@ -13,13 +13,18 @@
             <button type="submit" class="btn btn-primary">Log Out</button>
           </form>
         </li>
-        <li>
-          <form class="form-inline" action="{{ url_for('skills.search') }}" method="POST">
-              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
+        <li class="active">
+          <form action="{{ url_for('skills.add_comment') }}">
+            <button type="submit" class="btn btn-primary">New Comment</button>
+          </form>
+        </li>
+        <li class="active">
+          <form class="form-inline" method="GET">
+            <input class="form-control mr-sm-2" type="Search" placeholder="Search" arial-label="Search" name="search_query">
           </form>
         </li>
       </ul>
-    </div>
+  </div>
 
     <!-- Displays media links in cards using url and title -->
     <h1 style="text-align: center; color: white; font-style: italic;">Skill Resources</h1>
@@ -43,7 +48,7 @@
     <!-- Pagination (Initially Hidden) -->
     <nav aria=-label="Page navigation">
         <ul class="pagination justify-content-center">
-            {% if current_page != 1 %}
+            {% if current_page and current_page != 1 %}
                  <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
                  <li class="page-item"><a class="page-link" href="?page={{ current_page - 1 }}">Previous</a></li>
             {% endif %}
@@ -52,7 +57,7 @@
                     <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
                 </li>                
             {% endfor %}
-            {% if current_page != total_pages %}
+            {% if current_page and current_page != total_pages %}
                  <li class="page-item"><a class="page-link" href="?page={{ current_page + 1 }}">Next</a></li>
                  <li class="page-item"><a class="page-link" href="?page={{ total_pages }}">Last</a></li>
             {% endif %}

@@ -70,6 +70,5 @@ CREATE TABLE comments (
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `user_id` INTEGER NOT NULL,
     `parent_comment_id` INTEGER,
-    FOREIGN KEY (`user_id`) REFERENCES users (`id`),
-    FOREIGN KEY (`parent_comment_id`) REFERENCES comments (`id`)
+    FOREIGN KEY (`user_id`) REFERENCES users (`id`)
 );

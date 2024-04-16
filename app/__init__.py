@@ -10,7 +10,7 @@ def create_app():
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         DATABASE=str(Path(app.instance_path) / 'db.sqlite3'),
-        SECRET_KEY='dev',
+        SECRET_KEY='skill',
         UPLOAD_FOLDER=Path(__file__).parent / 'static' / 'uploads',
         ALLOWED_EXTENSIONS = {'pdf', 'txt', 'png', 'jpg', 'jpeg', 'gif'}
     )

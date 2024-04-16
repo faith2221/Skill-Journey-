@@ -1,64 +1,82 @@
 {% extends "layout.html" %}
 
-{% block head %}
-    {{ super()}}
-    <!-- link to specific CSS file for login page -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='users/user_settings.css') }}">
-{% endblock %}
-
 {% block content %}
-<h1>User Settings</h1>
+<div class="container">
+    <h1 class="text-center" style="font-style: italic;">User Settings</h1>
 
-<form method="POST" action="{{ url_for('users.user_settings') }}">
-    <!-- Theme Preference -->
-    <label for="theme_preference">Theme Preference:</label>
-    <select name="theme_preference" id="theme_preference">
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
-        <option value="auto">Auto</option>
-        <option value="default">Default</option>
-    </select><br>
+    <form method="POST" action="{{ url_for('users.user_settings') }}">
+        <!-- Theme Preference -->
+        <div class="mb-3">
+            <label for="theme_preference">Theme Preference:</label>
+            <select name="theme_preference" id="theme_preference">
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+                <option value="auto">Auto</option>
+                <option value="default">Default</option>
+            </select><br>
+        </div>
 
-    <!-- Push Notifications -->
-    <input type="checkbox" id="push_notifications" name="push_notifications" id="push_notifications">
-    <label for="push_notifications">Push Notifications</label><br>
+        <!-- Push Notifications -->
+        <div class="form-check mb-3">
+            <input type="checkbox" id="push_notifications" name="push_notifications" id="push_notifications">
+            <label for="push_notifications">Push Notifications</label><br>
+        </div>
+         <!-- Email Notification -->
+         <div class="form-check mb-3">
+            <input type="checkbox" id="email_notification" name="email_notification" id="email_notification">
+            <label for="email_notification">Email Notification</label><br>
+        </div>
 
-    <!-- Email Notification -->
-    <input type="checkbox" id="email_notification" name="email_notification" id="email_notification">
-    <label for="email_notification">Email Notification</label><br>
+        <!-- Language -->
+        <div class="form-check mb">
+            <label for="language" class="form-label">Language:</label>
+            <input type="text" name="language" id="language" class="form-control" value="English" readonly><br>
+        </div>
+   
+         <!-- Text Size -->
+         <div class="form-check mb-3">
+            <label for="text_size">Text Size:</label>
+            <select name="text_size" id="text_size">
+                <option value="small">Small</option>
+                <option value="medium">Medium</option>
+                <option value="large">Large</option>
+            </select><br>
+        </div>
 
-    <!-- Language -->
-    <label for="language">Language:</label>
-    <input type="text" name="language" id="language"><br>
+        <!-- Background Color -->
+        <div class="form-check mb-3">
+            <label for="background_color">Background Color:</label>
+            <input type="text" name="background_color" id="background_color"><br>
+        </div>
 
-    <!-- Text Size -->
-    <label for="text_size">Text Size:</label>
-    <select name="text_size" id="text_size">
-        <option value="small">Small</option>
-        <option value="medium">Medium</option>
-        <option value="large">Large</option>
-    </select><br>
+        <!-- Color Contrast -->
+        <div class="form-check mb-3">
+            <label for="color_contrast">Color Contrast:</label>
+            <input type="text" name="color_contrast" id="color_contrast"><br>
+        </div>
+      
+        <div class="form-check mb-3">
+            <label for="color_contrast">Color Contrast:</label>
+            <select name="color_contrast" id="color_contrast">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select><br>
+        </div>
 
-    <!-- Background Color -->
-    <label for="background_color">Background Color:</label>
-    <input type="text" name="background_color" id="background_color"><br>
+        <!-- Social Media Connected -->
+        <div class="form-check mb-3">
+            <input type="checkbox" name="social_media_connected" id="social_media_connected">
+            <label for="social_media_connected">Social Media Connected</label><br>
+        </div>
 
-    <!-- Color Contrast -->
-    <label for="color_contrast">Color Contrast:</label>
-    <select name="color_contrast" id="color_contrast">
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-    </select><br>
+        <!-- Dark Mode -->
+        <div class="form-check mb-3">
+            <input type="checkbox" name="dark_mode" id="dark_mode">
+            <label for="dark_mode">Dark Mode</label><br>
+        </div>
 
-    <!-- Social Media Connected -->
-    <input type="checkbox" name="social_media_connected" id="social_media_connected">
-    <label for="social_media_connected">Social Media Connected</label><br>
-
-    <!-- Dark Mode -->
-    <input type="checkbox" name="dark_mode" id="dark_mode">
-    <label for="dark_mode">Dark Mode</label><br>
-
-    <input type="submit" value="Save Settings">
-</form>
+        <button type="submit" class="btn btn-primary">Save Settings</button>
+    </form>
+</div>
 {% endblock %}

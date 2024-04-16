@@ -43,44 +43,26 @@ def view_media():
                            total_pages=total_pages, current_page=page)
 
 
-@bp.route('/comments', methods=['POST'])
+@bp.route('/comments/add', methods=['GET', 'POST'])
 @login_required
 def add_comment():
     """ Logic to add a comment to a post"""
-    db = get_db()
-    content = request.form['content']
-    user_id = g.user['id']
-
-    # Validate Input
-    db.execute("""INSERT INTO comments (content, user_id, created_at)
-               VALUES (?, ?, ?)""", (content, user_id, datetime.utcnow()))
-    db.commit()
-    flash('Comment added successfully!', 'success')
-    return redirect(url_for('skills.view_all_comments'))
-
-@bp.route('/comments/<int:parent_comment_id>/reply', methods=['GET', 'POST'])
-@login_required
-def reply_comment(parent_comment_id):
-    """ Logic to show the reply form for a comment"""
     if request.method == 'POST':
-        # Handle form submission
         content = request.form['content']
-        user_id = g.user['id']
 
-        # Validate input and add the  comment
-        if content:
-            db = get_db()
-            db.execute("""INSERT INTO comments (content, user_id, parent_comment_id, created_at)
-                       VALUES (?, ?, ?)""",
-                       (content, user_id, parent_comment_id, datetime.utcnow()))
-            db.commit()
-            flash('Reply added successfully!', 'success')
+        if not content:
+            flash('Content is required!')
+
+        else:        
+            user_id = g.user['id']
+
+            # Validate Input
+            with get_db() as db:
+                db.execute("""INSERT INTO comments (content, user_id, created_at)
+                       VALUES (?, ?, ?)""", (content, user_id, datetime.utcnow()))   
+                db.commit()
             return redirect(url_for('skills.view_all_comments'))
-        
-        flash('Content is required!', 'error')
-
-    # If it's a GET request or the form submission failed, render the reply form
-    return render_template('skills/reply_form.html', parent_comment=parent_comment)
+    return render_template('skills/add_comment.html')
 
 @bp.route('/comments', methods=['GET', 'POST'])
 @login_required
@@ -121,40 +103,9 @@ def view_all_comments():
                                previous_comment_ids=previous_comment_ids,
                                next_comment_ids=next_comment_ids)
 
-@bp.route('/comments/<int:parent_comment_id>/cancel_reply', methods=['POST'])
+@bp.route('/comments/cancel', methods=['POST'])
 @login_required
-def cancel_reply_comment(parent_comment_id):
-    """ Logic to cancel replying to a comment ."""
-    return redirect(url_for('skills.view_all_comments'))
-
-@bp.route('/comments/<int:comment_id>/cancel', methods=['POST'])
-@login_required
-def cancel_comment(comment_id):
+def cancel_comment():
     """ Logic to cancel a comment ."""
     flash('Comment canceled!', 'info')
     return redirect(url_for('skills.view_all_comments'))
-
-@bp.route('/search', methods=['POST'])
-@login_required
-def search():
-    """ Route to handle comprehensive search queries """
-    db = get_db()
-
-    # Handle search query
-    search_query = request.form.get('search_query', '').strip()
-    if search_query:
-        # Perform search query across posts, comments, and resources
-        results = db.execute("""SELECT 'comment' AS  type, c.id, c.content, NULL AS title, NULL AS url,
-                             c.created_at, u.username FROM comments c 
-                             JOIN users u ON c.user_id = u.id
-                             WHERE c.content LIKE ?
-                             UNION
-                             SELECT 'media' AS type, NULL AS id, title, NULL AS content, url,
-                             created_at, NULL AS username FROM media
-                             WHERE title LIKE ?""",
-                             ('%' + search_query + '%' + '%' + search_query + '%')).fetchall()
-    else:
-        # Redirect to home route if no search query
-        return redirect(url_for('users.home'))
-    
-    return render_template('skills/search.html', results=results, search_query=search_query)

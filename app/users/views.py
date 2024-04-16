@@ -69,9 +69,6 @@ def register():
         # Get the newly created user's ID
         user_id = db.execute("""SELECT id FROM users WHERE username = ?""",
                              (username,)).fetchone()['id']
-
-        # Insert profile record with initial data
-        db.execute("""INSERT INTO profiles (user_id, bio) VALUES (?, ?)""", (user_id, ''))
         db.commit()
 
         # Redirect to login page after successful registration
@@ -117,7 +114,7 @@ def  user_settings():
             'theme_preference': request.form.get('theme_preference'),
             'push_notifications': request.form.get('push_notifications') == 'on',
             'email_notifications': request.form.get('email_notifications') == 'on',
-            'language': request.form.get('language'),
+            'language': request.form.get('language', 'English'),
             'text_size': request.form.get('text_size'),
             'text_color': request.form.get('text_color'),
             'background_color': request.form.get('background_color'),

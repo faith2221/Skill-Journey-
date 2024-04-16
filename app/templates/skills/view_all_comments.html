@@ -10,22 +10,15 @@
       </li>
       <li class="active">
           <form action="{{ url_for('skills.add_comment') }}" method="GET">
-            <button type="submit" class="btn btn-primary">Post a Comment</button>
+            <button type="submit" class="btn btn-primary">New Comment</button>
           </form>
       </li>
-      <li>
-          <form class="form-inline" action="{{ url_for('skills.search') }}" method="POST">
-              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
+      <li class="active">
+          <form class="form-inline" method="GET">
+            <input class="form-control mr-sm-2" type="Search" placeholder="Search" arial-label="Search" name="search_query">
           </form>
       </li>
     </ul>
 </div>
-<!-- Displays Comments -->
-{% for commen in comments %}
-  <div class="comment">
-      <p>{{ comment.text }}</p>
-      <a href="{{ url_for('skills.reply_to_comment', comment_id=comment.id) }}">Reply</a>
-  </div>
-{% endfor %}
 
 {% endblock %}

@@ -1,22 +1,4 @@
-DROP TABLE IF EXISTS `logs`;
-DROP TABLE IF EXISTS `analytics`;
 DROP TABLE IF EXISTS `backups`;
-
-CREATE TABLE logs(
-    `id` INTEGER PRIMARY KEY AUTOINCREMENT,
-    `user_id` INTEGER NOT NULL,
-    `action` TEXT NOT NULL,
-    `timestamp` NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (`user_id`) REFERENCES users(`id`)
-);
-
-CREATE TABLE analytics(
-    `id` INTEGER PRIMARY KEY AUTOINCREMENT,
-    `user_id` INTEGER NOT NULL,
-    `action` TEXT NOT NULL,
-    `timestamp` NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (`user_id`) REFERENCES users(`id`)
-);
 
 CREATE TABLE backups(
     `id` INTEGER PRIMARY KEY AUTOINCREMENT,

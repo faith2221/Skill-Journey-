@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+      <ul class="nav nav-pills justify-content-end ml-auto">
+        <li class="active">
+          <form action="{{ url_for('users.home') }}">
+            <button type="submit" class="btn btn-primary">Home</button>
+          </form>
+        </li>
+        <li class="active">
+          <form action="{{ url_for('users.logout') }}">
+            <button type="submit" class="btn btn-primary">Log Out</button>
+          </form>
+        </li>
+      </ul>
+</div>
+<div style="text-align: center; style="font-style: italic;">
+    <h1 >Backup Database</h1>
+    <form action="{{ url_for('admin.backup') }}" method="POST">
+        <button type="submit">Backup</button>
+    </form>
+</div>
+{% endblock %}
