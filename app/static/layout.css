@@ -1,9 +1,17 @@
 /* layout.css */
 .logo {
     display: flex;
+    font-family: 'Tangerine', cursive;
     align-items: center;
     color: #007bff;
+    font-size: 36px;
+    margin-right: auto;
+}
+
+.slogan{
     font-size: 18px;
+    font-family: 'Tangerine', cursive;
+    color: #007bff;
     margin-right: auto;
 }
 
@@ -14,6 +22,13 @@
 .logo-text span:first-letter {
     margin-right: 10px;
     text-transform: uppercase;
+}
+
+.footer {
+    padding: 20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
 
 body {

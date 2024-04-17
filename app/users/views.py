@@ -11,9 +11,7 @@ from app.users.login_utils import login_required
 
 bp = Blueprint('users', __name__, url_prefix='/users')
 
-# Path where profile pictures will be uploaded
-UPLOAD_FOLDER = 'app/static/uploads'
-ALLOWED_EXTENSIONS = {'pdf', 'txt', 'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_EXTENSIONS ={'pdf', 'txt', 'png', 'jpg', 'jpeg', 'gif'}
 
 def is_admin():
     """ Check if the user is an admin."""

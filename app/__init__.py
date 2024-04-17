@@ -11,8 +11,7 @@ def create_app():
     app.config.from_mapping(
         DATABASE=str(Path(app.instance_path) / 'db.sqlite3'),
         SECRET_KEY='skill',
-        UPLOAD_FOLDER=Path(__file__).parent / 'static' / 'uploads',
-        ALLOWED_EXTENSIONS = {'pdf', 'txt', 'png', 'jpg', 'jpeg', 'gif'}
+        ALLOWED_EXTENSIONS ={'pdf', 'txt', 'png', 'jpg', 'jpeg', 'gif'}
     )
 
     # Ensure the instance folder exists
@@ -37,9 +36,6 @@ def create_app():
     # Initialize the database and backup
     from app import db
     db.init_app(app)
-
-    # Ensure the upload folder exists
-    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
     @app.route('/uploads/<filename>')
     def uploads(filename):

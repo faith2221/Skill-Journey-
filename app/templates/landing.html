@@ -20,10 +20,15 @@
         </li>
       </ul>
 </div>
-<div class="container text-center" style="font-style: italic;"">
-  <h1> Welcome to Skill Journey</h1>
-  <p>Discover curated resources to enhance your skills, whether programming, lifestyle, career or creativity.</p>
-  <p>Connect with peers, share insights, and collaborate on your skill-building journey.</p>
+<div class="container text-center" style="font-style: italic;">
+  <h1 style="margin-bottom: 20px; color: white";>Features</h1>
+  <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+     <img src="{{ url_for('static', filename='images/gif/registration.gif') }}" alt="registration" style="width: 20%; height: 20%;">
+       <p>Join us today by registering and become a valued member of our vibrant community.</p>
+     <img src="{{ url_for ('static', filename='images/gif/settings.gif') }}" alt="settings" style="width: 20%; height: 20%;">
+       <p>Personalize your experience by configuring your desired setting</p>
+     <img src="{{ url_for('static', filename='images/gif/media.gif') }}" alt="media" style="width: 20%; height: 20%;">
+       <p>Connect with peers, share insights, and collaborate on your skill-building journey.</p>
+  </div>
 </div>
-
 {% endblock content %}

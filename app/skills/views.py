@@ -17,7 +17,7 @@ def view_media():
 
     # Pagination parameters
     page = request.args.get('page', 1, type=int)
-    per_page = 10
+    per_page = 6
 
     # Search query 
     search_query = request.args.get('search_query', '').strip()

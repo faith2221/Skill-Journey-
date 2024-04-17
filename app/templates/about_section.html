@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+      <ul class="nav nav-pills justify-content-end ml-auto">
+        <li class="active">
+          <form action="{{ url_for('main.landing_page') }}">
+            <button type="submit" class="btn btn-primary">Back</button>
+          </form>
+        </li>
+        <li class="active">
+          <form action="{{ url_for('users.login') }}">
+            <button type="submit" class="btn btn-primary">Sign In</button>
+          </form>
+        </li>
+        <li class="active">
+          <form action="{{ url_for('users.register') }}">
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+          </form>
+        </li>
+      </ul>
+</div>
+<div class="container" style="font-style: italic;">
+  <div class="row">
+    <div class="col-md-8 offset-md-2  ">
+      <h3 class="text-center">About SkillJourney</h3>
+      <p class="small-text">SkillJourney is like a cozy corner on the internet where people from all over gather to learn cool stuff and chat with each other. It's my special project for Holberton, kind of like my online portfolio.</p>
+      
+      <p class="small-text">I got the idea from a website I love called MyDrama List (MDL), where folks share their favorite Asian dramas and chat about them. I thought, "Hey, why not do something like this but for learning new skills?"</p>
+      
+      <p class="small-text">So, I created SkillJourney! Here, you can find all sorts of resources to help you learn new things or get better at stuff you already know. It's like a treasure trove of knowledge waiting for you to explore.</p>
+      
+      <p class="small-text">But the best part? You're not alone on this journey! SkillJourney has a friendly community where you can leave comments, share useful links, and chat with other learners just like you.</p>
+      
+      <p class="small-text">Whether you want to dive into coding, get creative with graphic design, or even learn how to make the perfect cup of coffee, SkillJourney is here to help you every step of the way. So, what are you waiting for? Let's embark on this exciting learning adventure together!</p>
+      
+      <div class="mt-4">
+        <h5>Connect with us:</h5>
+        <ul class="list-unstyled">
+          <li><a href="https://www.instagram.com/edith.gleam/">Instagram</a></li>
+          <li><a href="https://www.facebook.com/edith.banda.31105?mibextid=ZbWKwL">Facebook</a></li>
+          <li><a href="https://github.com/faith2221">GitHub</a></li>
+          <li><a href="https://x.com/edith_serenity?t=xoWZMBHZ7pvU2JswKYJpNw&s=09">Twitter</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
