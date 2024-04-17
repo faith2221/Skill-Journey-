@@ -36,10 +36,5 @@ def create_app():
     # Initialize the database and backup
     from app import db
     db.init_app(app)
-
-    @app.route('/uploads/<filename>')
-    def uploads(filename):
-        """ Serve uploaded files."""
-        return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
     
     return app
