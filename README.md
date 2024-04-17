@@ -31,7 +31,9 @@ To learn more about how you can contribute, please refer to our contribution gui
 **Support**
 
 If you encounter any issues or have any questions about SkillJourney, please don't hesitate to contact us. Our support team is here to assist you and ensure that your learning experience is smooth and enjoyable.
+
 lujaja <jarzcyber@gmail.com>
+
 faith2221 <edithbanda014@gmail.com>
 
 **License**
